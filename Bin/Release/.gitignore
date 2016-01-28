@@ -5,3 +5,5 @@
 *.pdb
 *.exe.config
 *.exe
+*.ilk
+*.dll
