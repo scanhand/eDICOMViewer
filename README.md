@@ -1,8 +1,8 @@
-# DICOMEditor
+# DICOM Viewer
 
 Sometimes user want to modify header in DICOM file.
 
-This **DICOMEditor** support them.
+This **DICOM Viewer** support them.
 
 This project's DICOM parser is base on [**DCMTK**](https://github.com/commontk/DCMTK.git) library.
 
