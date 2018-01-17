@@ -16,7 +16,7 @@
     "dicom"
   ],
   "author": "scanhand",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/scanhand/DICOMViewer/issues"
   },
