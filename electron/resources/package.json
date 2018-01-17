@@ -23,8 +23,11 @@
   "homepage": "https://github.com/scanhand/DICOMViewer#readme",
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "css-loader": "^0.28.8",
     "jquery": "^3.2.1",
+    "json-loader": "^0.5.7",
     "source-map-loader": "^0.2.3",
+    "style-loader": "^0.19.1",
     "webpack": "^3.10.0"
   }
 }
