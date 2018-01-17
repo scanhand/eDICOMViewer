@@ -1,0 +1,30 @@
+{
+  "name": "dicom_viewer",
+  "version": "0.0.0",
+  "description": "dicom viewer",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd .. & electron.exe"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scanhand/DICOMViewer.git"
+  },
+  "keywords": [
+    "electron",
+    "dicom"
+  ],
+  "author": "scanhand",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scanhand/DICOMViewer/issues"
+  },
+  "homepage": "https://github.com/scanhand/DICOMViewer#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "source-map-loader": "^0.2.3",
+    "webpack": "^3.10.0"
+  }
+}
