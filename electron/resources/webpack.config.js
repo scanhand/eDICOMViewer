@@ -1,3 +1,6 @@
+var path = require('path');
+var webpack = require('webpack');
+
 module.exports = {
     entry: './index.js',
     output: {
@@ -10,12 +13,21 @@ module.exports = {
                 // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
                 { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
                 { test: /\.json$/, loader: 'json-loader' },
-                { test: /\.css$/,  use: [ 'style-loader', 'css-loader' ] }
+                { test: /\.css$/,  loader: 'style-loader!css-loader' },
+                { test: /\.html$/, loader: 'raw' },
+                { test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file-loader' }
             ]
     },
 
     resolve: {
         extensions: ['.js']
-    }
+    },
+
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery'
+        }),
+    ]
 };
-  
