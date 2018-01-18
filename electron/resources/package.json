@@ -22,11 +22,12 @@
   },
   "homepage": "https://github.com/scanhand/DICOMViewer#readme",
   "dependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0-beta.3",
     "css-loader": "^0.28.8",
     "file-loader": "^1.1.6",
     "jquery": "^3.2.1",
     "json-loader": "^0.5.7",
+    "popper.js": "^1.12.9",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.19.1",
     "url-loader": "^0.6.2",
