@@ -1,3 +1,4 @@
+import { BrowserView } from 'electron';
 const {remote} = require('electron');
 const {Menu, MenuItem} = remote;
 
@@ -22,8 +23,19 @@ menu.append(new MenuItem({
             click: ()=>{
                 console.log("Click About DICOM Viewer.");
             }
-        }
+        },
+      
     ]
 }));
+
+//for debugging
+menu.append(new MenuItem(
+    {
+        label: 'reload',
+        click: ()=>{
+            remote.getCurrentWindow().reload();
+        }
+    }
+));
 
 Menu.setApplicationMenu(menu);
