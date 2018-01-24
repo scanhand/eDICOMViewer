@@ -17294,6 +17294,7 @@ module.exports = function (css) {
 
 const {remote} = __webpack_require__(1);
 const {Menu, MenuItem} = remote;
+const {dialog} = __webpack_require__(1).remote
 
 const menu = new Menu();
 menu.append(new MenuItem({
@@ -17302,7 +17303,18 @@ menu.append(new MenuItem({
         {
             label: 'Open File...',
             click: ()=>{
-                console.log("Click Open File.");
+                var files=[];
+                files = dialog.showOpenDialog({
+                    properties: ['openFile'],
+                    filters: [
+                        {name: 'DICOM', extensions: ['dcm', 'dic']},
+                        {name: 'All Files', extensions: ['*']}
+                      ]
+                }); 
+                if(files == null)
+                    return;
+                
+                console.log(files);
             }
         }
     ]

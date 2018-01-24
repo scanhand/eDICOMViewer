@@ -1,6 +1,7 @@
 import { BrowserView } from 'electron';
 const {remote} = require('electron');
 const {Menu, MenuItem} = remote;
+const {dialog} = require('electron').remote
 
 const menu = new Menu();
 menu.append(new MenuItem({
@@ -9,7 +10,18 @@ menu.append(new MenuItem({
         {
             label: 'Open File...',
             click: ()=>{
-                console.log("Click Open File.");
+                var files=[];
+                files = dialog.showOpenDialog({
+                    properties: ['openFile'],
+                    filters: [
+                        {name: 'DICOM', extensions: ['dcm', 'dic']},
+                        {name: 'All Files', extensions: ['*']}
+                      ]
+                }); 
+                if(files == null)
+                    return;
+                
+                console.log(files);
             }
         }
     ]
