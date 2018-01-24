@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
+    target: 'electron-renderer',
     entry: './index.js',
     output: {
         path: __dirname + '/../build',

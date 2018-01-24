@@ -10333,44 +10333,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bootstrap__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap_dist_css_bootstrap_css__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap_dist_css_bootstrap_css__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap_dist_css_bootstrap_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bootstrap_dist_css_bootstrap_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__menu_js__);
 
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#JQTest').html('<h1>Index.js First Write!</h1>');
-__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#JQTest').append(" \
-<table class='table  table-striped table-dark'> \
-<thead class='thead-dark'>\
-  <tr>\
-    <th scope='col'>#</th>\
-    <th scope='col'>First</th>\
-    <th scope='col'>Last</th>\
-    <th scope='col'>Handle</th>\
-  </tr>\
-</thead>\
-<tbody>\
-  <tr>\
-    <th scope='row'>1</th>\
-    <td>Mark</td>\
-    <td>Otto</td>\
-    <td>@mdo</td>\
-  </tr>\
-  <tr>\
-    <th scope='row'>2</th>\
-    <td>Jacob</td>\
-    <td>Thornton</td>\
-    <td>@fat</td>\
-  </tr>\
-  <tr>\
-    <th scope='row'>3</th>\
-    <td>Larry</td>\
-    <td>the Bird</td>\
-    <td>@twitter</td>\
-  </tr>\
-</tbody>\
-</table>");
 
 /***/ }),
 /* 2 */
@@ -14277,7 +14247,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(global) {/**!
+/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.12.9
  * @license
@@ -16714,43 +16684,15 @@ Popper.Defaults = Defaults;
 
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(6);
+var content = __webpack_require__(5);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -16758,7 +16700,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -16775,10 +16717,10 @@ if(false) {
 }
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)(false);
+exports = module.exports = __webpack_require__(6)(false);
 // imports
 
 
@@ -16789,7 +16731,7 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0 (https://getbootstrap.com)\n *
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 /*
@@ -16871,7 +16813,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -16927,7 +16869,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(9);
+var	fixUrls = __webpack_require__(8);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -17243,7 +17185,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 
@@ -17336,6 +17278,46 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("electron");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {remote} = __webpack_require__(9);
+const {Menu, MenuItem} = remote;
+
+const menu = new Menu();
+menu.append(new MenuItem({
+    label:'File', 
+    submenu: [
+        {
+            label: 'Open File...',
+            click: ()=>{
+                console.log("Click Open File.");
+            }
+        }
+    ]
+}));
+
+menu.append(new MenuItem({
+    label:'About',
+    submenu: [
+        {
+            label: 'About DICOM Viewer...',
+            click: ()=>{
+                console.log("Click About DICOM Viewer.");
+            }
+        }
+    ]
+}));
+
+Menu.setApplicationMenu(menu);
 
 /***/ })
 /******/ ]);
