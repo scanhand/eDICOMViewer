@@ -16,3 +16,9 @@ console.log("test_return_string::" + nodeDCMTK.test_return_string(1.9876));
 
 //call test_loaddcm
 nodeDCMTK.test_loaddcm();
+
+//call test_get_DcmFileFormat
+var dcmFileFormat = nodeDCMTK.test_get_DcmFileFormat();
+
+//call test_voidptr_paramter
+nodeDCMTK.test_voidptr_paramter(dcmFileFormat);
