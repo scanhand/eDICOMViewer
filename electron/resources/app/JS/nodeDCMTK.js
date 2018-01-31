@@ -4,8 +4,10 @@ var dllPath = '.\\dll';
 process.env['PATH'] = `${process.env.PATH};${dllPath}`;
 // binding to a nodeDCMTK functions...
 var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
-'test_dcmtk': [ 'int', [ 'int', 'int' ]]
+'test_dcmtk': [ 'int', [ 'int', 'int' ]],
+'test_parameter_string' : [ 'void', ['string']]
 });
+
 process.env['PATH'] = oldPath;
 
 export default nodeDCMTK;
