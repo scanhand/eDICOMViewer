@@ -10460,12 +10460,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-//call test_dcmtk
-var result = __WEBPACK_IMPORTED_MODULE_4__nodeDCMTK_js__["a" /* default */].test_dcmtk(3,4);
+//call test_sum
+var result = __WEBPACK_IMPORTED_MODULE_4__nodeDCMTK_js__["a" /* default */].test_sum(3,4);
+console.log("3+4=" + result);
 
+//call test_parameter_string
 __WEBPACK_IMPORTED_MODULE_4__nodeDCMTK_js__["a" /* default */].test_parameter_string('test1234');
 
-console.log("3+4=" + result);
+//call test_return_string
+console.log("test_return_string::" + __WEBPACK_IMPORTED_MODULE_4__nodeDCMTK_js__["a" /* default */].test_return_string(1.9876));
+
+//call test_loaddcm
+__WEBPACK_IMPORTED_MODULE_4__nodeDCMTK_js__["a" /* default */].test_loaddcm();
+
 
 /***/ }),
 /* 3 */
@@ -17476,8 +17483,10 @@ var dllPath = '.\\dll';
 process.env['PATH'] = `${process.env.PATH};${dllPath}`;
 // binding to a nodeDCMTK functions...
 var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
-'test_dcmtk': [ 'int', [ 'int', 'int' ]],
-'test_parameter_string' : [ 'void', ['string']]
+'test_sum': [ 'int', [ 'int', 'int' ]],
+'test_parameter_string' : [ 'void', ['string']],
+'test_return_string' : ['string', ['double']],
+'test_loaddcm' : [ 'void', []]
 });
 
 process.env['PATH'] = oldPath;
