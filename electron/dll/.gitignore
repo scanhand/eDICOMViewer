@@ -2,3 +2,5 @@
 *.iobj
 *.ipdb
 *.pdb
+/NodeDCMTK.dll
+/NodeDCMTK.lib
