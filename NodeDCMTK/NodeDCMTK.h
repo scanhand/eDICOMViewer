@@ -15,4 +15,6 @@ extern "C" {
 	DllExport void* test_get_DcmFileFormat(char* fileName);
 
 	DllExport void test_voidptr_paramter(void* dcmPtr);
+
+	DllExport int OpenDcmFileFormat(char* fileName, void** dcmptr);
 }

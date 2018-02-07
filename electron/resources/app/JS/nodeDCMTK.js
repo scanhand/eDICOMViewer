@@ -4,8 +4,9 @@ var dllPath = '.\\dll';
 process.env['PATH'] = `${process.env.PATH};${dllPath}`;
 // binding to a nodeDCMTK functions...
 
-var DcmFileFormat = ref.types.void // we don't know what the layout of "myobj" looks like
+var DcmFileFormat = ref.types.void 
 var DcmFileFormatPtr = ref.refType(DcmFileFormat);
+var DcmFileFormatPtrPtr = ref.refType(DcmFileFormatPtr);
 
 var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'test_sum': [ 'int', [ 'int', 'int' ]],
@@ -14,7 +15,7 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'test_loaddcm': [ 'void', ['string']],
 'test_get_DcmFileFormat': [ DcmFileFormatPtr, ['string']],
 'test_voidptr_paramter': [ 'void', [DcmFileFormatPtr]],
-
+'OpenDcmFileFormat': ['int',['string',DcmFileFormatPtrPtr]]
 });
 
 process.env['PATH'] = oldPath;
