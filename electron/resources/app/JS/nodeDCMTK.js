@@ -21,4 +21,5 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 
 process.env['PATH'] = oldPath;
 
-export default nodeDCMTK;
+export { DcmFileFormatPtrPtr, nodeDCMTK };
+
