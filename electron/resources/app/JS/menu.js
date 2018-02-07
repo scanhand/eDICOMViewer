@@ -2,6 +2,7 @@ import { BrowserView } from 'electron';
 const {remote} = require('electron');
 const {Menu, MenuItem} = remote;
 const {dialog} = require('electron').remote
+var dcmTK = require('./nodeDCMTK.js');
 
 const menu = new Menu();
 menu.append(new MenuItem({
@@ -21,7 +22,7 @@ menu.append(new MenuItem({
                 if(files == null)
                     return;
                 
-                console.log(files);
+                dcmTK.loadDICOMFile(files[0]);
             }
         }
     ]
