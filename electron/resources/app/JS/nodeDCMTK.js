@@ -15,7 +15,8 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'test_loaddcm': [ 'void', ['string']],
 'test_get_DcmFileFormat': [ DcmFileFormatPtr, ['string']],
 'test_voidptr_paramter': [ 'void', [DcmFileFormatPtr]],
-'OpenDcmFileFormat': ['int',['string',DcmFileFormatPtrPtr]]
+'OpenDcmFileFormat': ['int',['string',DcmFileFormatPtrPtr]],
+'DumpDcmTag': ['int',[DcmFileFormatPtr]]
 });
 
 process.env['PATH'] = oldPath;

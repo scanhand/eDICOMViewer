@@ -33,4 +33,4 @@ var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
 
 var isSuccess = nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat);
 console.log("OpenDcmFileFormat::return=" + isSuccess.toString());
-nodeDCMTK.test_voidptr_paramter(dcmFileFormat.deref());
+nodeDCMTK.DumpDcmTag(dcmFileFormat.deref());
