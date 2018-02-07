@@ -11,8 +11,8 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'test_sum': [ 'int', [ 'int', 'int' ]],
 'test_parameter_string': [ 'void', ['string']],
 'test_return_string': ['string', ['double']],
-'test_loaddcm': [ 'void', []],
-'test_get_DcmFileFormat': [ DcmFileFormatPtr, []],
+'test_loaddcm': [ 'void', ['string']],
+'test_get_DcmFileFormat': [ DcmFileFormatPtr, ['string']],
 'test_voidptr_paramter': [ 'void', [DcmFileFormatPtr]],
 
 });

@@ -10,9 +10,9 @@ extern "C" {
 
 	DllExport char* test_return_string(double data);
 
-	DllExport void test_loaddcm();
+	DllExport void test_loaddcm(char* fileName);
 
-	DllExport void* test_get_DcmFileFormat();
+	DllExport void* test_get_DcmFileFormat(char* fileName);
 
 	DllExport void test_voidptr_paramter(void* dcmPtr);
 }

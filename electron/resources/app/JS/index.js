@@ -15,10 +15,11 @@ nodeDCMTK.test_parameter_string('test1234');
 console.log("test_return_string::" + nodeDCMTK.test_return_string(1.9876));
 
 //call test_loaddcm
-nodeDCMTK.test_loaddcm();
+var fileName = '..\\etc\\sampleDICOM\\0001.DCM';
+nodeDCMTK.test_loaddcm(fileName);
 
 //call test_get_DcmFileFormat
-var dcmFileFormat = nodeDCMTK.test_get_DcmFileFormat();
+var dcmFileFormat = nodeDCMTK.test_get_DcmFileFormat(fileName);
 
 //call test_voidptr_paramter
 nodeDCMTK.test_voidptr_paramter(dcmFileFormat);
