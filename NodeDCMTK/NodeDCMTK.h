@@ -29,4 +29,12 @@ extern "C" {
 	DllExport int DumpDcmTag(void* dcmPtr);
 
 	DllExport int GetElementCount(void* dcmPtr, long* count);
+
+	DllExport int GetElement(void* dcmPtr, int index, void** elementPtr);
+
+	DllExport int GetElementGTag(void* elementPtr, unsigned short* gtag);
+
+	DllExport int GetElementETag(void* elementPtr, unsigned short* etag);
+
+	DllExport int GetElementTagName(void* elementPtr, char* tagName);
 }
