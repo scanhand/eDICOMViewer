@@ -26,6 +26,8 @@
     "bindings": "^1.2.0",
     "bootstrap": "^4.0.0-beta.3",
     "css-loader": "^0.28.8",
+    "datatables.net": "^1.10.16",
+    "datatables.net-dt": "^1.10.16",
     "electron": "^1.7.11",
     "ffi": "^2.2.0",
     "file-loader": "^1.1.6",
