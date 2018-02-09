@@ -16,8 +16,6 @@ var DcmElementPtrPtr = ref.refType(DcmElementPtr);
 
 var longPtr = ref.refType('long');
 var ushortPtr = ref.refType('uint16');
-// var stringPtr = ref.refType('string');
-var stringPtr = ref.refType(ref.types.CString);
 
 var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'test_sum': [ 'int', [ 'int', 'int' ]],
@@ -33,7 +31,7 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'GetElement': ['int',[DcmFileFormatPtr,'int', DcmElementPtrPtr]],
 'GetElementGTag': ['int',[DcmElementPtr,ushortPtr]],
 'GetElementETag': ['int',[DcmElementPtr,ushortPtr]],
-'GetElementTagName': ['int',[DcmElementPtr,'stringPtr']]
+'GetElementTagName': ['int',[DcmElementPtr,'char*']]
 });
 
 process.env['PATH'] = oldPath;
@@ -48,24 +46,24 @@ function loadDICOMFile(fileName){
     nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
     console.log("GetElementCount Success=" + elementCount.deref());
 
-    var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
-    nodeDCMTK.GetElement(dcmFileFormat.deref(), 0, dcmElementPtr);
+    for(var i=0; i<elementCount.deref(); i++)
+    {
+        var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
+        nodeDCMTK.GetElement(dcmFileFormat.deref(), i, dcmElementPtr);
 
-    var gtag = ref.alloc('uint16');
-    nodeDCMTK.GetElementGTag(dcmElementPtr.deref(), gtag);
+        var gtag = ref.alloc('uint16');
+        nodeDCMTK.GetElementGTag(dcmElementPtr.deref(), gtag);
 
-    var etag = ref.alloc('uint16');
-    nodeDCMTK.GetElementETag(dcmElementPtr.deref(), etag);
+        var etag = ref.alloc('uint16');
+        nodeDCMTK.GetElementETag(dcmElementPtr.deref(), etag);
 
-    //buf = new Buffer 255
-    var elementName = new Buffer(255);
-    nodeDCMTK.GetElementTagName(dcmElementPtr, elementName);
-    // console.log("GetElementTagName=" + ref.readCString(elementName, 0));
-    console.log("GetElementTagName=" + elementName.toString('utf-8'));
-    console.log("GetElement [{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)));
+        //buf = new Buffer 255
+        var elementName = new Buffer(255);
+        nodeDCMTK.GetElementTagName(dcmElementPtr.deref(), elementName);
+        console.log("GetElementTagName=" + elementName.toString('utf8'));
+        console.log("GetElement [{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)));
+    }
 
-
-    
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
