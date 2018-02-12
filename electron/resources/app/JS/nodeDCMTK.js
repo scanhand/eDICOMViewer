@@ -46,25 +46,9 @@ function loadDICOMFile(fileName){
     var elementCount = ref.alloc('long');
     nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
     console.log("GetElementCount Success=" + elementCount.deref());
+    
+    ///TODO:delete  items in elementTable
 
-    var elements = [
-        {
-            "name":       "Tiger Nixon",
-            "position":   "System Architect",
-            "salary":     "$3,120",
-            "start_date": "2011/04/25",
-            "office":     "Edinburgh",
-            "extn":       "5421"
-        },
-        {
-            "name":       "Garrett Winters",
-            "position":   "Director",
-            "salary":     "$5,300",
-            "start_date": "2011/07/25",
-            "office":     "Edinburgh",
-            "extn":       "8422"
-        }
-    ]
     for(var i=0; i<elementCount.deref(); i++)
     {
         var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
@@ -85,26 +69,15 @@ function loadDICOMFile(fileName){
 
         console.log("GetElementTagName=" + elementName.toString('utf8'), +", Value=" + value.toString('utf8'));
         console.log("GetElement [{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)));
+
+        elementTable.row.add([
+            "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)),
+            elementName.toString('utf8'),
+            value.toString('utf8'),
+        ]).draw(false);
     }
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
-    
-    
-    console.log(elementTable)
-    elementTable.destroy();
-
-    elementTable = $('#Elements').DataTable({
-        paging: false,
-        searching: false,
-        data: elements,
-        columns: [
-            { data: 'name' },
-            { data: 'position' },
-            { data: 'salary' },
-            { data: 'office' }
-        ]
-    });
-
 };
 
 export { 
