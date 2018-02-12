@@ -2,6 +2,12 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
+    
+    resolve: {
+        modules: ['./', 'node_modules'],
+        extensions: ['.js']
+    },
+
     target: 'electron-renderer',
     entry: './index.js',
     output: {
@@ -16,12 +22,13 @@ module.exports = {
                 { test: /\.json$/, loader: 'json-loader' },
                 { test: /\.css$/,  loader: 'style-loader!css-loader' },
                 { test: /\.html$/, loader: 'raw' },
-                { test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file-loader' }
+                { test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, 
+                  loader: 'file-loader', 
+                  options: {
+                      publicPath: './build/' 
+                  }
+                }
             ]
-    },
-
-    resolve: {
-        extensions: ['.js']
     },
 
     plugins: [

@@ -32,7 +32,8 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'GetElement': ['int',[DcmFileFormatPtr,'int', DcmElementPtrPtr]],
 'GetElementGTag': ['int',[DcmElementPtr,ushortPtr]],
 'GetElementETag': ['int',[DcmElementPtr,ushortPtr]],
-'GetElementTagName': ['int',[DcmElementPtr,'char*']]
+'GetElementTagName': ['int',[DcmElementPtr,'char*']],
+'GetElementStringValue': ['int',[DcmElementPtr,'char*']]
 });
 
 process.env['PATH'] = oldPath;
@@ -61,7 +62,11 @@ function loadDICOMFile(fileName){
         //buf = new Buffer 255
         var elementName = new Buffer(255);
         nodeDCMTK.GetElementTagName(dcmElementPtr.deref(), elementName);
-        console.log("GetElementTagName=" + elementName.toString('utf8'));
+
+        var value = new Buffer(255);
+        nodeDCMTK.GetElementStringValue(dcmElementPtr.deref(), value);
+
+        console.log("GetElementTagName=" + elementName.toString('utf8'), +", Value=" + value.toString('utf8'));
         console.log("GetElement [{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)));
     }
 

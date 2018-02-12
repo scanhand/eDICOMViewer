@@ -37,4 +37,6 @@ extern "C" {
 	DllExport int GetElementETag(void* elementPtr, unsigned short* etag);
 
 	DllExport int GetElementTagName(void* elementPtr, char* tagName);
+
+	DllExport int GetElementStringValue(void* elementPtr, char* value);
 }
