@@ -1,4 +1,3 @@
-
 var util = require('./util.js');
 
 var oldPath = process.env.PATH;
@@ -48,6 +47,24 @@ function loadDICOMFile(fileName){
     nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
     console.log("GetElementCount Success=" + elementCount.deref());
 
+    var elements = [
+        {
+            "name":       "Tiger Nixon",
+            "position":   "System Architect",
+            "salary":     "$3,120",
+            "start_date": "2011/04/25",
+            "office":     "Edinburgh",
+            "extn":       "5421"
+        },
+        {
+            "name":       "Garrett Winters",
+            "position":   "Director",
+            "salary":     "$5,300",
+            "start_date": "2011/07/25",
+            "office":     "Edinburgh",
+            "extn":       "8422"
+        }
+    ]
     for(var i=0; i<elementCount.deref(); i++)
     {
         var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
@@ -71,6 +88,23 @@ function loadDICOMFile(fileName){
     }
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
+    
+    
+    console.log(elementTable)
+    elementTable.destroy();
+
+    elementTable = $('#Elements').DataTable({
+        paging: false,
+        searching: false,
+        data: elements,
+        columns: [
+            { data: 'name' },
+            { data: 'position' },
+            { data: 'salary' },
+            { data: 'office' }
+        ]
+    });
+
 };
 
 export { 
