@@ -16,6 +16,7 @@ var DcmElementPtrPtr = ref.refType(DcmElementPtr);
 
 var longPtr = ref.refType('long');
 var ushortPtr = ref.refType('uint16');
+var boolPtr = ref.refType('bool');
 
 var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'test_sum': [ 'int', [ 'int', 'int' ]],
@@ -33,7 +34,8 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'GetElementETag': ['int',[DcmElementPtr,ushortPtr]],
 'GetElementTagName': ['int',[DcmElementPtr,'char*']],
 'GetElementStringValue': ['int',[DcmElementPtr,'char*']],
-'GetElementVR': ['int',[DcmElementPtr,'char*']]
+'GetElementVR': ['int',[DcmElementPtr,'char*']],
+'IsLeafElement': ['int',[DcmElementPtr,boolPtr]]
 });
 
 process.env['PATH'] = oldPath;
@@ -70,8 +72,14 @@ function loadDICOMFile(fileName){
         var value = new Buffer(255);
         nodeDCMTK.GetElementStringValue(dcmElementPtr.deref(), value);
 
+        var isLeaf = ref.alloc('bool');
+        nodeDCMTK.IsLeafElement(dcmElementPtr.deref(), isLeaf);
+
+        var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
+        if(isLeaf)
+            elementText = ">"+ elementText;
         elementTable.row.add([
-            "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)),
+            elementText,
             elementName.toString('utf8'),
             vr.toString('utf8'),
             value.toString('utf8'),

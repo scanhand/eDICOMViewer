@@ -41,4 +41,6 @@ extern "C" {
 	DllExport int GetElementStringValue(void* elementPtr, char* value);
 
 	DllExport int GetElementVR(void* elementPtr, char* vr);
+
+	DllExport int IsLeafElement(void* elementPtr, bool* isLeaf);
 }
