@@ -32,7 +32,8 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'GetElementGTag': ['int',[DcmElementPtr,ushortPtr]],
 'GetElementETag': ['int',[DcmElementPtr,ushortPtr]],
 'GetElementTagName': ['int',[DcmElementPtr,'char*']],
-'GetElementStringValue': ['int',[DcmElementPtr,'char*']]
+'GetElementStringValue': ['int',[DcmElementPtr,'char*']],
+'GetElementVR': ['int',[DcmElementPtr,'char*']]
 });
 
 process.env['PATH'] = oldPath;
@@ -60,19 +61,19 @@ function loadDICOMFile(fileName){
         var etag = ref.alloc('uint16');
         nodeDCMTK.GetElementETag(dcmElementPtr.deref(), etag);
 
-        //buf = new Buffer 255
         var elementName = new Buffer(255);
         nodeDCMTK.GetElementTagName(dcmElementPtr.deref(), elementName);
+
+        var vr = new Buffer(255);
+        nodeDCMTK.GetElementVR(dcmElementPtr.deref(), vr);
 
         var value = new Buffer(255);
         nodeDCMTK.GetElementStringValue(dcmElementPtr.deref(), value);
 
-        console.log("GetElementTagName=" + elementName.toString('utf8'), +", Value=" + value.toString('utf8'));
-        console.log("GetElement [{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)));
-
         elementTable.row.add([
             "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4)),
             elementName.toString('utf8'),
+            vr.toString('utf8'),
             value.toString('utf8'),
         ]).draw(false);
     }
