@@ -42,6 +42,7 @@ process.env['PATH'] = oldPath;
 
 
 function loadDICOMFile(fileName){
+
     var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error("OpenDcmFileFormat failed!");
@@ -50,6 +51,7 @@ function loadDICOMFile(fileName){
     nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
     console.log("GetElementCount Success=" + elementCount.deref());
     
+
     ///TODO:delete  items in elementTable
 
     for(var i=0; i<elementCount.deref(); i++)

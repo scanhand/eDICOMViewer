@@ -28,6 +28,8 @@ extern "C" {
 
 	DllExport int DumpDcmTag(void* dcmPtr);
 
+	DllExport int DumpDcmTagHierarchy(void* dcmPtr);
+
 	DllExport int GetElementCount(void* dcmPtr, long* count);
 
 	DllExport int GetElement(void* dcmPtr, int index, void** elementPtr);

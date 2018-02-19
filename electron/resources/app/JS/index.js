@@ -5,7 +5,9 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'datatables.net-dt/css/jquery.dataTables.css';
 import 'datatables.net';
+var dcmTK = require('./nodeDCMTK.js');
 import menu from './menu.js';
+
 
 console.log("index.js loaded!")
 
@@ -14,4 +16,10 @@ $(document).ready(function() {
         paging: false,
         searching: false
     });
+
+    
 } );
+
+///Test Code
+var fileName = "..\\etc\\sampleDICOM\\0001.DCM";
+dcmTK.nodeDCMTK.test_loaddcm(fileName);
