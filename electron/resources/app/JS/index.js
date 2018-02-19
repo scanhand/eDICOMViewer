@@ -17,9 +17,8 @@ $(document).ready(function() {
         searching: false
     });
 
-    
+    ///Test Code
+    var fileName = "..\\etc\\sampleDICOM\\0001.DCM";
+    dcmTK.loadDICOMFileHierarchy(fileName);
 } );
 
-///Test Code
-var fileName = "..\\etc\\sampleDICOM\\0001.DCM";
-dcmTK.nodeDCMTK.test_loaddcm(fileName);

@@ -14,6 +14,10 @@ var DcmElement = ref.types.void
 var DcmElementPtr = ref.refType(DcmElement);
 var DcmElementPtrPtr = ref.refType(DcmElementPtr);
 
+var DcmObject = ref.types.void 
+var DcmObjectPtr = ref.refType(DcmObject);
+var DcmObjectPtrPtr = ref.refType(DcmObjectPtr);
+
 var longPtr = ref.refType('long');
 var ushortPtr = ref.refType('uint16');
 var boolPtr = ref.refType('bool');
@@ -35,11 +39,35 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'GetElementTagName': ['int',[DcmElementPtr,'char*']],
 'GetElementStringValue': ['int',[DcmElementPtr,'char*']],
 'GetElementVR': ['int',[DcmElementPtr,'char*']],
-'IsLeafElement': ['int',[DcmElementPtr,boolPtr]]
+'IsLeafElement': ['int',[DcmElementPtr,boolPtr]],
+'GetDcmDataSet': ['int',[DcmFileFormatPtr, DcmObjectPtrPtr]],
+'DcmObjectNextInContainer': ['int',[DcmObjectPtr, DcmObjectPtr, DcmObjectPtrPtr]],
+'DcmObjectNextObjectTop': ['int',[DcmObjectPtr, DcmObjectPtrPtr]]
 });
 
 process.env['PATH'] = oldPath;
 
+function loadDICOMFileHierarchy(fileName){
+
+    var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
+    if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
+        console.error("OpenDcmFileFormat failed!");
+
+    var elementCount = ref.alloc('long');
+    nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
+    console.log("GetElementCount Success=" + elementCount.deref());
+    
+    ///TODO:delete  items in elementTable
+    for(var i=0; i<elementCount.deref(); i++)
+    {
+        var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
+        nodeDCMTK.GetElement(dcmFileFormat.deref(), i, dcmElementPtr);
+
+        AddTableRow(dcmElementPtr);
+    }
+
+    nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
+}
 
 function loadDICOMFile(fileName){
 
@@ -51,50 +79,50 @@ function loadDICOMFile(fileName){
     nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
     console.log("GetElementCount Success=" + elementCount.deref());
     
-
-    ///TODO:delete  items in elementTable
-
     for(var i=0; i<elementCount.deref(); i++)
     {
         var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
         nodeDCMTK.GetElement(dcmFileFormat.deref(), i, dcmElementPtr);
 
-        var gtag = ref.alloc('uint16');
-        nodeDCMTK.GetElementGTag(dcmElementPtr.deref(), gtag);
-
-        var etag = ref.alloc('uint16');
-        nodeDCMTK.GetElementETag(dcmElementPtr.deref(), etag);
-
-        var elementName = new Buffer(255);
-        nodeDCMTK.GetElementTagName(dcmElementPtr.deref(), elementName);
-
-        var vr = new Buffer(255);
-        nodeDCMTK.GetElementVR(dcmElementPtr.deref(), vr);
-
-        var value = new Buffer(255);
-        nodeDCMTK.GetElementStringValue(dcmElementPtr.deref(), value);
-
-        var isLeaf = ref.alloc('bool');
-        nodeDCMTK.IsLeafElement(dcmElementPtr.deref(), isLeaf);
-
-        var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
-        if(isLeaf)
-            elementText = ">"+ elementText;
-        elementTable.row.add([
-            elementText,
-            elementName.toString('utf8'),
-            vr.toString('utf8'),
-            value.toString('utf8'),
-        ]).draw(false);
+        AddTableRow(dcmElementPtr);
     }
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
+function AddTableRow(dcmElementPtr){
+    var gtag = ref.alloc('uint16');
+    nodeDCMTK.GetElementGTag(dcmElementPtr.deref(), gtag);
+
+    var etag = ref.alloc('uint16');
+    nodeDCMTK.GetElementETag(dcmElementPtr.deref(), etag);
+
+    var elementName = new Buffer(255);
+    nodeDCMTK.GetElementTagName(dcmElementPtr.deref(), elementName);
+
+    var vr = new Buffer(255);
+    nodeDCMTK.GetElementVR(dcmElementPtr.deref(), vr);
+
+    var value = new Buffer(255);
+    nodeDCMTK.GetElementStringValue(dcmElementPtr.deref(), value);
+
+    var isLeaf = ref.alloc('bool');
+    nodeDCMTK.IsLeafElement(dcmElementPtr.deref(), isLeaf);
+
+    var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
+    elementTable.row.add([
+        elementText,
+        elementName.toString('utf8'),
+        vr.toString('utf8'),
+        value.toString('utf8'),
+    ]).draw(false);
+}
+
 export { 
     DcmFileFormatPtrPtr,
     DcmElementPtrPtr,
     nodeDCMTK,
-    loadDICOMFile 
+    loadDICOMFile,
+    loadDICOMFileHierarchy
 };
 
