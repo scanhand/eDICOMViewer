@@ -53,20 +53,37 @@ function loadDICOMFileHierarchy(fileName){
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error("OpenDcmFileFormat failed!");
 
-    var elementCount = ref.alloc('long');
-    nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
-    console.log("GetElementCount Success=" + elementCount.deref());
-    
-    ///TODO:delete  items in elementTable
-    for(var i=0; i<elementCount.deref(); i++)
-    {
-        var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
-        nodeDCMTK.GetElement(dcmFileFormat.deref(), i, dcmElementPtr);
+    var dataset = ref.alloc(DcmObjectPtrPtr);
+    nodeDCMTK.GetDcmDataSet(dcmFileFormat.deref(), dataset);
 
-        AddTableRow(dcmElementPtr);
-    }
+    var nextObject = ref.alloc(DcmObjectPtrPtr);
+    nodeDCMTK.DcmObjectNextInContainer(dataset.deref(), ref.NULL, nextObject);
+    AddRowHierarchy(dataset.deref(), nextObject);
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
+}
+
+var totalcount = 0;
+function AddRowHierarchy(container, current){
+    if(container == ref.NULL || current == ref.NULL)
+        return;
+
+    if(totalcount > 100)
+        return;
+
+    console.log(totalcount++);
+
+    AddTableRow(current);
+
+    var isLeaf = ref.alloc('bool');
+    nodeDCMTK.IsLeafElement(current.deref(), isLeaf);
+    if(isLeaf == false)
+    {
+    }
+    
+    var nextObject = ref.alloc(DcmObjectPtrPtr);
+    nodeDCMTK.DcmObjectNextInContainer(container, current.deref(), nextObject);
+    AddRowHierarchy(container, nextObject);
 }
 
 function loadDICOMFile(fileName){
