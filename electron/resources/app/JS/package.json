@@ -1,7 +1,7 @@
 {
-  "name": "dicom_viewer",
+  "name": "edicom_viewer",
   "version": "0.0.0",
-  "description": "dicom viewer",
+  "description": "eDICOMViewer",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scanhand/DICOMViewer.git"
+    "url": "git+https://github.com/scanhand/eDICOMViewer.git"
   },
   "keywords": [
     "electron",
@@ -19,9 +19,9 @@
   "author": "scanhand",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/scanhand/DICOMViewer/issues"
+    "url": "https://github.com/scanhand/eDICOMViewer/issues"
   },
-  "homepage": "https://github.com/scanhand/DICOMViewer#readme",
+  "homepage": "https://github.com/scanhand/eDICOMViewer#readme",
   "dependencies": {
     "bindings": "^1.2.0",
     "bootstrap": "^4.0.0-beta.3",
