@@ -20,7 +20,7 @@ var DcmObjectPtrPtr = ref.refType(DcmObjectPtr);
 
 var longPtr = ref.refType('long');
 var ushortPtr = ref.refType('uint16');
-var boolPtr = ref.refType('bool');
+var ucharPtr = ref.refType('uchar');
 
 var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'test_sum': [ 'int', [ 'int', 'int' ]],
@@ -39,7 +39,7 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'GetElementTagName': ['int',[DcmElementPtr,'char*']],
 'GetElementStringValue': ['int',[DcmElementPtr,'char*']],
 'GetElementVR': ['int',[DcmElementPtr,'char*']],
-'IsLeafElement': ['int',[DcmElementPtr,boolPtr]],
+'IsLeafElement': ['int',[DcmElementPtr,ucharPtr]],
 'GetDcmDataSet': ['int',[DcmFileFormatPtr, DcmObjectPtrPtr]],
 'DcmObjectNextInContainer': ['int',[DcmObjectPtr, DcmObjectPtr, DcmObjectPtrPtr]],
 'DcmObjectNextObjectTop': ['int',[DcmObjectPtr, DcmObjectPtrPtr]]
@@ -58,32 +58,32 @@ function loadDICOMFileHierarchy(fileName){
 
     var nextObject = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.DcmObjectNextInContainer(dataset.deref(), ref.NULL, nextObject);
-    AddRowHierarchy(dataset.deref(), nextObject);
+    AddRowHierarchy(dataset.deref(), nextObject.deref(), 0);
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 }
 
 var totalcount = 0;
-function AddRowHierarchy(container, current){
-    if(container == ref.NULL || current == ref.NULL)
+function AddRowHierarchy(container, current, level){
+    if(ref.isNull(container) || ref.isNull(current))
         return;
 
-    if(totalcount > 100)
-        return;
+    AddTableRow(current, level);
 
-    console.log(totalcount++);
-
-    AddTableRow(current);
-
-    var isLeaf = ref.alloc('bool');
-    nodeDCMTK.IsLeafElement(current.deref(), isLeaf);
-    if(isLeaf == false)
+    var isLeaf = ref.alloc('uchar');
+    nodeDCMTK.IsLeafElement(current, isLeaf);
+    // console.log("{0}".format(isLeaf.deref()));
+    if(isLeaf.deref() == 0)
     {
+        var nextTopObject = ref.alloc(DcmObjectPtrPtr);
+        nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
+        // AddTableRow(nextTopObject.deref(), 0);
+        AddRowHierarchy(current, nextTopObject.deref(), level+1);
     }
     
     var nextObject = ref.alloc(DcmObjectPtrPtr);
-    nodeDCMTK.DcmObjectNextInContainer(container, current.deref(), nextObject);
-    AddRowHierarchy(container, nextObject);
+    nodeDCMTK.DcmObjectNextInContainer(container, current, nextObject);
+    AddRowHierarchy(container, nextObject.deref(), level);
 }
 
 function loadDICOMFile(fileName){
@@ -100,33 +100,34 @@ function loadDICOMFile(fileName){
     {
         var dcmElementPtr = ref.alloc(DcmElementPtrPtr);
         nodeDCMTK.GetElement(dcmFileFormat.deref(), i, dcmElementPtr);
-
-        AddTableRow(dcmElementPtr);
+        AddTableRow(dcmElementPtr.deref());
     }
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
-function AddTableRow(dcmElementPtr){
+function AddTableRow(dcmElementPtr, level){
     var gtag = ref.alloc('uint16');
-    nodeDCMTK.GetElementGTag(dcmElementPtr.deref(), gtag);
+    nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
 
     var etag = ref.alloc('uint16');
-    nodeDCMTK.GetElementETag(dcmElementPtr.deref(), etag);
+    nodeDCMTK.GetElementETag(dcmElementPtr, etag);
 
     var elementName = new Buffer(255);
-    nodeDCMTK.GetElementTagName(dcmElementPtr.deref(), elementName);
+    nodeDCMTK.GetElementTagName(dcmElementPtr, elementName);
 
     var vr = new Buffer(255);
-    nodeDCMTK.GetElementVR(dcmElementPtr.deref(), vr);
+    nodeDCMTK.GetElementVR(dcmElementPtr, vr);
 
     var value = new Buffer(255);
-    nodeDCMTK.GetElementStringValue(dcmElementPtr.deref(), value);
+    nodeDCMTK.GetElementStringValue(dcmElementPtr, value);
 
-    var isLeaf = ref.alloc('bool');
-    nodeDCMTK.IsLeafElement(dcmElementPtr.deref(), isLeaf);
+    var isLeaf = ref.alloc('uchar');
+    nodeDCMTK.IsLeafElement(dcmElementPtr, isLeaf);
 
     var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
+    for(var i=0; i<level; i++)
+        elementText = '>' + elementText;
     elementTable.row.add([
         elementText,
         elementName.toString('utf8'),
