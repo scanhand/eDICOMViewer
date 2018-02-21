@@ -57,16 +57,16 @@ function loadDICOMFileHierarchy(fileName){
 
     var nextObject = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.DcmObjectNextInContainer(dataset.deref(), ref.NULL, nextObject);
-    AddRowHierarchy(dataset.deref(), nextObject.deref(), 0);
+    AddRowHierarchy(dataset.deref(), nextObject.deref(), 0, null);
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 }
 
-function AddRowHierarchy(container, current, level){
+function AddRowHierarchy(container, current, level, parentRow){
     if(ref.isNull(container) || ref.isNull(current))
         return;
 
-    AddTableRow(current, level);
+    var row = AddTableRow(current, level, parentRow);
 
     var isLeaf = ref.alloc('uchar');
     nodeDCMTK.IsLeafElement(current, isLeaf);
@@ -74,12 +74,12 @@ function AddRowHierarchy(container, current, level){
     {
         var nextTopObject = ref.alloc(DcmObjectPtrPtr);
         nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
-        AddRowHierarchy(current, nextTopObject.deref(), level+1);
+        AddRowHierarchy(current, nextTopObject.deref(), level+1, row);
     }
     
     var nextObject = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.DcmObjectNextInContainer(container, current, nextObject);
-    AddRowHierarchy(container, nextObject.deref(), level);
+    AddRowHierarchy(container, nextObject.deref(), level, parentRow);
 }
 
 function loadDICOMFile(fileName){
@@ -101,7 +101,7 @@ function loadDICOMFile(fileName){
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
-function AddTableRow(dcmElementPtr, level){
+function AddTableRow(dcmElementPtr, level, parentRow){
     var gtag = ref.alloc('uint16');
     nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
 
@@ -121,15 +121,30 @@ function AddTableRow(dcmElementPtr, level){
     nodeDCMTK.IsLeafElement(dcmElementPtr, isLeaf);
 
     var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
-    for(var i=0; i<level; i++)
-        elementText = elementText + '<';
-
-    elementTable.row.add([
-        elementText,
-        elementName.toString('utf8'),
-        vr.toString('utf8'),
-        value.toString('utf8'),
-    ]).draw(false);
+    if(parentRow != null)
+    {
+        for(var i=0; i<level; i++)
+            elementText = elementText + '<';
+        // console.log(parentRow)
+        var row = parentRow.table().row.add([
+            0,
+            elementText,
+            elementName.toString('utf8'),
+            vr.toString('utf8'),
+            value.toString('utf8'),
+        ]).draw(false);
+        return row;
+    }
+    else
+    {
+        return elementTable.row.add([
+            0,
+            elementText,
+            elementName.toString('utf8'),
+            vr.toString('utf8'),
+            value.toString('utf8'),
+        ]).draw(false);
+    }
 }
 
 export { 

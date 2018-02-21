@@ -17,6 +17,12 @@ $(document).ready(function() {
         searching: false,
         ordering: false,
         columns: [
+            {
+                "className":      'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
             { title: "Elment Tag" },
             { title: "Tag Name" },
             { title: "VR" },
