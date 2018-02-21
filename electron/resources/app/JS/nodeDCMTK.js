@@ -72,12 +72,10 @@ function AddRowHierarchy(container, current, level){
 
     var isLeaf = ref.alloc('uchar');
     nodeDCMTK.IsLeafElement(current, isLeaf);
-    // console.log("{0}".format(isLeaf.deref()));
     if(isLeaf.deref() == 0)
     {
         var nextTopObject = ref.alloc(DcmObjectPtrPtr);
         nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
-        // AddTableRow(nextTopObject.deref(), 0);
         AddRowHierarchy(current, nextTopObject.deref(), level+1);
     }
     
@@ -127,7 +125,8 @@ function AddTableRow(dcmElementPtr, level){
 
     var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
     for(var i=0; i<level; i++)
-        elementText = '>' + elementText;
+        elementText = elementText + '<';
+
     elementTable.row.add([
         elementText,
         elementName.toString('utf8'),

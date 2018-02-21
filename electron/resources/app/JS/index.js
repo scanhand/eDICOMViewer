@@ -14,7 +14,8 @@ console.log("index.js loaded!")
 $(document).ready(function() {
     elementTable = $('#Elements').DataTable({
         paging: false,
-        searching: false
+        searching: false,
+        ordering: false
     });
 
     ///Test Code
