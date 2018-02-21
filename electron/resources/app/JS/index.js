@@ -21,6 +21,5 @@ $(document).ready(function() {
     ///Test Code
     var fileName = "..\\etc\\sampleDICOM\\0001.DCM";
     dcmTK.loadDICOMFileHierarchy(fileName);
-    // dcmTK.loadDICOMFile(fileName);
 } );
 

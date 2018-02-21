@@ -48,7 +48,6 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 process.env['PATH'] = oldPath;
 
 function loadDICOMFileHierarchy(fileName){
-
     var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error("OpenDcmFileFormat failed!");
@@ -63,7 +62,6 @@ function loadDICOMFileHierarchy(fileName){
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 }
 
-var totalcount = 0;
 function AddRowHierarchy(container, current, level){
     if(ref.isNull(container) || ref.isNull(current))
         return;
@@ -85,7 +83,6 @@ function AddRowHierarchy(container, current, level){
 }
 
 function loadDICOMFile(fileName){
-
     var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error("OpenDcmFileFormat failed!");
