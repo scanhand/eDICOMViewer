@@ -15,7 +15,13 @@ $(document).ready(function() {
     elementTable = $('#Elements').DataTable({
         paging: false,
         searching: false,
-        ordering: false
+        ordering: false,
+        columns: [
+            { title: "Elment Tag" },
+            { title: "Tag Name" },
+            { title: "VR" },
+            { title: "Value" }
+        ]
     });
 
     ///Test Code
