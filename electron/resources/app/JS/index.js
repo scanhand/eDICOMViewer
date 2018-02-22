@@ -17,18 +17,32 @@ $(document).ready(function() {
         searching: false,
         ordering: false,
         columns: [
-            {
-                "className":      'details-control',
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ''
-            },
-            { title: "Elment Tag" },
-            { title: "Tag Name" },
-            { title: "VR" },
-            { title: "Value" }
+            { title: "Elment Tag", data: "tag" },
+            { title: "Tag Name", data: "name" },
+            { title: "VR", data: "vr" },
+            { title: "Value", data: "value" }
         ]
     });
+
+    // Add event listener for opening and closing details
+    $('#Elements tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = elementTable.row( tr );
+ 
+        // tr.addClass('open');
+        /*
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            //row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            //row.child( format(row.data()) ).show();
+            tr.addClass('close');
+        }
+        */
+    } );
 
     ///Test Code
     var fileName = "..\\etc\\sampleDICOM\\0001.DCM";

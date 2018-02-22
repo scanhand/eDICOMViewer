@@ -57,16 +57,16 @@ function loadDICOMFileHierarchy(fileName){
 
     var nextObject = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.DcmObjectNextInContainer(dataset.deref(), ref.NULL, nextObject);
-    AddRowHierarchy(dataset.deref(), nextObject.deref(), 0, null);
+    AddRowHierarchy(dataset.deref(), nextObject.deref(), 0, null, 0);
 
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 }
 
-function AddRowHierarchy(container, current, level, parentRow){
+function AddRowHierarchy(container, current, level, parentRow, id){
     if(ref.isNull(container) || ref.isNull(current))
         return;
 
-    var row = AddTableRow(current, level, parentRow);
+    var newRow = AddTableRow(current, level, parentRow, id++);
 
     var isLeaf = ref.alloc('uchar');
     nodeDCMTK.IsLeafElement(current, isLeaf);
@@ -74,12 +74,12 @@ function AddRowHierarchy(container, current, level, parentRow){
     {
         var nextTopObject = ref.alloc(DcmObjectPtrPtr);
         nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
-        AddRowHierarchy(current, nextTopObject.deref(), level+1, row);
+        AddRowHierarchy(current, nextTopObject.deref(), level+1, newRow, id);
     }
     
     var nextObject = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.DcmObjectNextInContainer(container, current, nextObject);
-    AddRowHierarchy(container, nextObject.deref(), level, parentRow);
+    AddRowHierarchy(container, nextObject.deref(), level, parentRow, id);
 }
 
 function loadDICOMFile(fileName){
@@ -101,7 +101,7 @@ function loadDICOMFile(fileName){
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
-function AddTableRow(dcmElementPtr, level, parentRow){
+function AddTableRow(dcmElementPtr, level, parentRow, id){
     var gtag = ref.alloc('uint16');
     nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
 
@@ -123,28 +123,28 @@ function AddTableRow(dcmElementPtr, level, parentRow){
     var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
     if(parentRow != null)
     {
-        for(var i=0; i<level; i++)
-            elementText = elementText + '<';
+        // for(var i=0; i<level; i++)
+        //     elementText = elementText + '<';
         // console.log(parentRow)
-        var row = parentRow.table().row.add([
-            0,
-            elementText,
-            elementName.toString('utf8'),
-            vr.toString('utf8'),
-            value.toString('utf8'),
-        ]).draw(false);
-        return row;
+        var row = parentRow.table().row.add({
+            "tag": elementText,
+            "name": elementName.toString('utf8'),
+            "vr": vr.toString('utf8'),
+            "value": value.toString('utf8'),
+        }).draw(false);
+
+        // console.log(row);
     }
     else
     {
-        return elementTable.row.add([
-            0,
-            elementText,
-            elementName.toString('utf8'),
-            vr.toString('utf8'),
-            value.toString('utf8'),
-        ]).draw(false);
+        var row = elementTable.row.add({
+            "tag": elementText,
+            "name": elementName.toString('utf8'),
+            "vr": vr.toString('utf8'),
+            "value": value.toString('utf8'),
+        }).draw(false);
     }
+    return row;
 }
 
 export { 
