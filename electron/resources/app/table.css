@@ -2,9 +2,16 @@ td.details-control {
     /* background: url('./img/details_open.png') no-repeat center center; */
 }
 
-tr.none td.details-control {
-   
+
+/*
+td.details-control {
+    background: url('../resources/details_open.png') no-repeat center center;
+    cursor: pointer;
 }
+tr.shown td.details-control {
+    background: url('../resources/details_close.png') no-repeat center center;
+}
+*/
 
 tr.open td.details-control {
     background: url('./img/details_open.png') no-repeat center center;

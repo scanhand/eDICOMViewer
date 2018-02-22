@@ -66,12 +66,15 @@ function AddRowHierarchy(container, current, level, parentRow, id){
     if(ref.isNull(container) || ref.isNull(current))
         return;
 
-    var newRow = AddTableRow(current, level, parentRow, id++);
-
     var isLeaf = ref.alloc('uchar');
     nodeDCMTK.IsLeafElement(current, isLeaf);
+
+    var newRow = AddTableRow(current, level, parentRow, id++, isLeaf.deref());
+
     if(isLeaf.deref() == 0)
     {
+        addClass(newRow, 'open');
+
         var nextTopObject = ref.alloc(DcmObjectPtrPtr);
         nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
         AddRowHierarchy(current, nextTopObject.deref(), level+1, newRow, id);
@@ -80,6 +83,10 @@ function AddRowHierarchy(container, current, level, parentRow, id){
     var nextObject = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.DcmObjectNextInContainer(container, current, nextObject);
     AddRowHierarchy(container, nextObject.deref(), level, parentRow, id);
+}
+
+function addClass(row, type){
+    row.nodes().to$().addClass(type);
 }
 
 function loadDICOMFile(fileName){
@@ -101,7 +108,7 @@ function loadDICOMFile(fileName){
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
-function AddTableRow(dcmElementPtr, level, parentRow, id){
+function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
     var gtag = ref.alloc('uint16');
     nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
 
@@ -123,21 +130,18 @@ function AddTableRow(dcmElementPtr, level, parentRow, id){
     var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
     if(parentRow != null)
     {
-        // for(var i=0; i<level; i++)
-        //     elementText = elementText + '<';
-        // console.log(parentRow)
         var row = parentRow.table().row.add({
+            "id": id,
             "tag": elementText,
             "name": elementName.toString('utf8'),
             "vr": vr.toString('utf8'),
             "value": value.toString('utf8'),
         }).draw(false);
-
-        // console.log(row);
     }
     else
     {
         var row = elementTable.row.add({
+            "id": id,
             "tag": elementText,
             "name": elementName.toString('utf8'),
             "vr": vr.toString('utf8'),

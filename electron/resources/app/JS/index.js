@@ -16,7 +16,10 @@ $(document).ready(function() {
         paging: false,
         searching: false,
         ordering: false,
+        rowId: 'id',
         columns: [
+            { data: "id", visible: false },
+            { "className": 'details-control', "orderable": false, "data": null, "defaultContent": ''},
             { title: "Elment Tag", data: "tag" },
             { title: "Tag Name", data: "name" },
             { title: "VR", data: "vr" },
