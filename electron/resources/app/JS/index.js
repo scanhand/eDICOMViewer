@@ -31,20 +31,15 @@ $(document).ready(function() {
     $('#Elements tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = elementTable.row( tr );
- 
-        // tr.addClass('open');
-        /*
-        if ( row.child.isShown() ) {
-            // This row is already open - close it
-            //row.child.hide();
-            tr.removeClass('shown');
+
+        if(dcmTK.IsRowOpend(row))
+        {
+            dcmTK.SetOpenClosed(row, 'closed');
         }
-        else {
-            // Open this row
-            //row.child( format(row.data()) ).show();
-            tr.addClass('close');
+        else
+        {
+            dcmTK.SetOpenClosed(row, 'opend');
         }
-        */
     } );
 
     ///Test Code

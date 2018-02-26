@@ -50,7 +50,7 @@ process.env['PATH'] = oldPath;
 function loadDICOMFileHierarchy(fileName){
     var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
-        console.error("OpenDcmFileFormat failed!");
+        console.error('OpenDcmFileFormat failed!');
 
     var dataset = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.GetDcmDataSet(dcmFileFormat.deref(), dataset);
@@ -76,7 +76,7 @@ function AddRowHierarchy(container, current, level, parentRow, id){
 
     if(isLeaf.deref() == 0)
     {
-        addClass(newRow, 'opend');
+        SetOpenClosed(newRow, 'opend');
         var nextTopObject = ref.alloc(DcmObjectPtrPtr);
         nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
         AddRowHierarchy(current, nextTopObject.deref(), level+1, newRow, id);
@@ -87,18 +87,43 @@ function AddRowHierarchy(container, current, level, parentRow, id){
     AddRowHierarchy(container, nextObject.deref(), level, parentRow, id);
 }
 
+function IsRowOpend(row){
+    return row.nodes().to$().hasClass('opend');
+}
+
+function IsRowClosed(row){
+    return row.nodes().to$().hasClass('closed');
+}
+
+function SetOpenClosed(row, stat){
+    if(stat.toLowerCase().indexOf('close') >= 0)
+    {
+        removeClass(row, 'opend');
+        addClass(row, 'closed');
+    }
+    else if(stat.toLowerCase().indexOf('open') >= 0)
+    {
+        removeClass(row, 'closed');
+        addClass(row, 'opend');
+    }
+}
+
 function addClass(row, type){
     row.nodes().to$().addClass(type);
+}
+
+function removeClass(row, type){
+    row.nodes().to$().removeClass(type);
 }
 
 function loadDICOMFile(fileName){
     var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
-        console.error("OpenDcmFileFormat failed!");
+        console.error('OpenDcmFileFormat failed!');
 
     var elementCount = ref.alloc('long');
     nodeDCMTK.GetElementCount(dcmFileFormat.deref(), elementCount);
-    console.log("GetElementCount Success=" + elementCount.deref());
+    console.log('GetElementCount Success=' + elementCount.deref());
     
     for(var i=0; i<elementCount.deref(); i++)
     {
@@ -116,8 +141,6 @@ function IsItemTag(dcmElementPtr){
 
     var etag = ref.alloc('uint16');
     nodeDCMTK.GetElementETag(dcmElementPtr, etag);
-
-
 
     if(gtag.deref() == 0xFFFE && etag.deref() == 0xE000)
         return true;
@@ -144,27 +167,27 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
     var isLeaf = ref.alloc('uchar');
     nodeDCMTK.IsLeafElement(dcmElementPtr, isLeaf);
 
-    var elementText = "[{0}:{1}]".format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
+    var elementText = '[{0}:{1}]'.format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
     if(parentRow != null)
     {
         var row = parentRow.table().row.add({
-            "id": id,
-            "tag": elementText,
-            "name": elementName.toString('utf8'),
-            "vr": vr.toString('utf8'),
-            "value": value.toString('utf8'),
+            'id': id,
+            'tag': elementText,
+            'name': elementName.toString('utf8'),
+            'vr': vr.toString('utf8'),
+            'value': value.toString('utf8'),
         }).draw(false);
 
-        // addClass(row, "hided");
+        row.nodes().to$().hide();
     }
     else
     {
         var row = elementTable.row.add({
-            "id": id,
-            "tag": elementText,
-            "name": elementName.toString('utf8'),
-            "vr": vr.toString('utf8'),
-            "value": value.toString('utf8'),
+            'id': id,
+            'tag': elementText,
+            'name': elementName.toString('utf8'),
+            'vr': vr.toString('utf8'),
+            'value': value.toString('utf8'),
         }).draw(false);
     }
     return row;
@@ -175,6 +198,9 @@ export {
     DcmElementPtrPtr,
     nodeDCMTK,
     loadDICOMFile,
-    loadDICOMFileHierarchy
+    loadDICOMFileHierarchy,
+    SetOpenClosed,
+    IsRowOpend,
+    IsRowClosed
 };
 
