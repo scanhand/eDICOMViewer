@@ -69,12 +69,14 @@ function AddRowHierarchy(container, current, level, parentRow, id){
     var isLeaf = ref.alloc('uchar');
     nodeDCMTK.IsLeafElement(current, isLeaf);
 
-    var newRow = AddTableRow(current, level, parentRow, id++, isLeaf.deref());
+    ///If currnet tag is item tag, set parentRow to newRow. 
+    var newRow = parentRow;
+    if(!IsItemTag(current))
+        newRow = AddTableRow(current, level, parentRow, id++, isLeaf.deref());
 
     if(isLeaf.deref() == 0)
     {
-        addClass(newRow, 'open');
-
+        addClass(newRow, 'opend');
         var nextTopObject = ref.alloc(DcmObjectPtrPtr);
         nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
         AddRowHierarchy(current, nextTopObject.deref(), level+1, newRow, id);
@@ -108,6 +110,21 @@ function loadDICOMFile(fileName){
     nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
+function IsItemTag(dcmElementPtr){
+    var gtag = ref.alloc('uint16');
+    nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
+
+    var etag = ref.alloc('uint16');
+    nodeDCMTK.GetElementETag(dcmElementPtr, etag);
+
+
+
+    if(gtag.deref() == 0xFFFE && etag.deref() == 0xE000)
+        return true;
+
+    return false;
+}
+
 function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
     var gtag = ref.alloc('uint16');
     nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
@@ -137,6 +154,8 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
             "vr": vr.toString('utf8'),
             "value": value.toString('utf8'),
         }).draw(false);
+
+        // addClass(row, "hided");
     }
     else
     {

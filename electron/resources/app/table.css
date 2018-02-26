@@ -13,12 +13,16 @@ tr.shown td.details-control {
 }
 */
 
-tr.open td.details-control {
+tr.hided {
+    display: none;
+}
+
+tr.opend td.details-control {
     background: url('./img/details_open.png') no-repeat center center;
     cursor: pointer;
 }
 
-tr.close td.details-control {
+tr.closed td.details-control {
     background: url('./img/details_close.png') no-repeat center center;
     cursor: pointer;
 }
