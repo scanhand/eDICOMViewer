@@ -148,6 +148,14 @@ function IsItemTag(dcmElementPtr){
     return false;
 }
 
+function GetRowId(row){
+    return row.id();
+}
+
+function SetRowId(row, id){
+    return row.nodes().to$().attr("parentid", id);
+}
+
 function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
     var gtag = ref.alloc('uint16');
     nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
@@ -177,6 +185,9 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
             'vr': vr.toString('utf8'),
             'value': value.toString('utf8'),
         }).draw(false);
+
+        ///Add explicitly
+        SetRowId(row, GetRowId(parentRow));
 
         row.nodes().to$().hide();
     }

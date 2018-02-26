@@ -19,7 +19,7 @@ $(document).ready(function() {
         rowId: 'id',
         columns: [
             { data: "id", visible: false },
-            { "className": 'details-control', "orderable": false, "data": null, "defaultContent": ''},
+            { className: 'details-control', orderable: false, data: null, defaultContent: ''},
             { title: "Elment Tag", data: "tag" },
             { title: "Tag Name", data: "name" },
             { title: "VR", data: "vr" },
