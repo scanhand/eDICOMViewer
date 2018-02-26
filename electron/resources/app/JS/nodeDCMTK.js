@@ -188,7 +188,7 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
 
         ///Add explicitly
         SetRowId(row, GetRowId(parentRow));
-
+        addClass(row, 'childitem');
         row.nodes().to$().hide();
     }
     else
@@ -212,6 +212,7 @@ export {
     loadDICOMFileHierarchy,
     SetOpenClosed,
     IsRowOpend,
-    IsRowClosed
+    IsRowClosed,
+    GetRowId
 };
 

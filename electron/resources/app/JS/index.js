@@ -31,19 +31,28 @@ $(document).ready(function() {
     $('#Elements tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = elementTable.row( tr );
-
+        
+        var parentid = dcmTK.GetRowId(row);
         if(dcmTK.IsRowOpend(row))
         {
             dcmTK.SetOpenClosed(row, 'closed');
+            $('[parentid={0}]'.format(parentid)).each(function(){
+                $(this).show();
+            });
         }
-        else
+        else if(dcmTK.IsRowClosed(row))
         {
             dcmTK.SetOpenClosed(row, 'opend');
+            $('[parentid={0}]'.format(parentid)).each(function(){
+                $(this).hide();
+            });
         }
     } );
 
     ///Test Code
     var fileName = "..\\etc\\sampleDICOM\\0001.DCM";
     dcmTK.loadDICOMFileHierarchy(fileName);
+
+
 } );
 

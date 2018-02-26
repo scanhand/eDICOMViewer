@@ -17,6 +17,10 @@ tr.hided {
     display: none;
 }
 
+tr.childitem {
+    background-color: #C0C0C0!important;
+}
+
 tr.opend td.details-control {
     background: url('./img/details_open.png') no-repeat center center;
     cursor: pointer;
