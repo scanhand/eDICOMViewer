@@ -6,6 +6,18 @@ tr.hided {
     display: none;
 }
 
+tr.even {
+    background-color: #202020!important;
+}
+
+tr.even:hover {
+    background-color: #505050!important;
+}
+
+tr.odd:hover {
+    background-color: #505050!important;
+}
+
 tr.opend td.details-control {
     background: url('./img/details_open.png') no-repeat center center;
     cursor: pointer;
@@ -14,4 +26,8 @@ tr.opend td.details-control {
 tr.closed td.details-control {
     background: url('./img/details_close.png') no-repeat center center;
     cursor: pointer;
+}
+
+div.DTS tbody tr.odd {
+    background-color: whitesmoke;
 }
