@@ -42,13 +42,26 @@ menu.append(new MenuItem({
 }));
 
 //for debugging
-menu.append(new MenuItem(
-    {
+menu.append(new MenuItem({
         label: 'reload',
         click: ()=>{
             remote.getCurrentWindow().reload();
         }
     }
+));
+
+var opendDevTool = false;
+menu.append(new MenuItem({
+    label: 'DevTool',
+    click: ()=>{
+        if(opendDevTool)
+            remote.getCurrentWebContents().closeDevTools();
+        else
+            remote.getCurrentWebContents().openDevTools();
+            
+        opendDevTool = !opendDevTool;
+    }
+}
 ));
 
 Menu.setApplicationMenu(menu);

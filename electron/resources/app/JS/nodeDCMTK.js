@@ -175,12 +175,12 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
     var isLeaf = ref.alloc('uchar');
     nodeDCMTK.IsLeafElement(dcmElementPtr, isLeaf);
 
-    var elementText = '[{0}:{1}]'.format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
+    var elementTag = '[{0}:{1}]'.format(util.toHex(gtag.deref(),4), util.toHex(etag.deref(),4));
     if(parentRow != null)
     {
         var row = parentRow.table().row.add({
             'id': id,
-            'tag': elementText,
+            'tag': elementTag,
             'name': elementName.toString('utf8'),
             'vr': vr.toString('utf8'),
             'value': value.toString('utf8'),
@@ -195,7 +195,7 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
     {
         var row = elementTable.row.add({
             'id': id,
-            'tag': elementText,
+            'tag': elementTag,
             'name': elementName.toString('utf8'),
             'vr': vr.toString('utf8'),
             'value': value.toString('utf8'),
