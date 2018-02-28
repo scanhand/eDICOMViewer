@@ -1,20 +1,23 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>eDICOMViewer</title>
-        <link rel="stylesheet" type="text/css" href="table.css">
-    </head>
-        <div class="chrome-tabs">
-            <div class="chrome-tabs-content"></div>
-            <div class="chrome-tabs-bottom-bar"></div>
-        </div>
-        <script type="text/javascript">
+
+<head>
+    <meta charset="utf-8">
+    <title>eDICOMViewer</title>
+    <link rel="stylesheet" type="text/css" href="table.css">
+    <link rel="stylesheet" type="text/css" href="openclose.css">
+</head>
+
+<body>
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script type="text/javascript" src="openclose.js"></script>
+    <script type="text/javascript">
         var ffi = require('./JS/node_modules/ffi');
         var ref = require('./JS/node_modules/ref');
         var elementTable = null;
-        </script>
-        <table id="Elements" class="table table-dark table-striped table-hover" cellspacing="0" width="100%">
-        </table>
-        <script type="text/javascript" src="build/bundle.js"></script>
-    </body>
+    </script>
+    <table id="Elements" class="table table-dark table-striped table-hover" cellspacing="0" width="100%">
+    </table>
+    <script type="text/javascript" src="build/bundle.js"></script>
+</body>
+
 </html>

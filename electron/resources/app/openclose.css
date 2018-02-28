@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #202020;
+}
+
+.open-close-button {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 0.1em solid #F0F0F0;
+  margin: 0.1em 45%;
+  font-size: 1.5em;
+  border-radius: 50%;
+  position: relative;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  -moz-transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.open-close-button:before {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #F0F0F0;
+  width: 80%;
+  height: 6%;
+  left: 10%;
+  top: 47%;
+}
+.open-close-button:after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #F0F0F0;
+  width: 6%;
+  height: 80%;
+  left: 47%;
+  top: 10%;
+}
+.open-close-button.open {
+  background-color: #F0F0F0;
+  -moz-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  -webkit-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+.open-close-button.open:after {
+  background-color: #F0F0F0;
+}
+.open-close-button.open:before {
+  background-color: #F0F0F0;
+}

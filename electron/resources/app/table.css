@@ -19,12 +19,12 @@ tr.odd:hover {
 }
 
 tr.opend td.details-control {
-    background: url('./img/details_open.png') no-repeat center center;
+    /* background: url('./img/details_open.png') no-repeat center center; */
     cursor: pointer;
 }
 
 tr.closed td.details-control {
-    background: url('./img/details_close.png') no-repeat center center;
+    /* background: url('./img/details_close.png') no-repeat center center; */
     cursor: pointer;
 }
 

@@ -76,6 +76,8 @@ function AddRowHierarchy(container, current, level, parentRow, id){
 
     if(isLeaf.deref() == 0)
     {
+        //newRow.nodes().to$().find("td:details-control").append("<div class='open-close-button'></div>");
+        //console.log(newRow.nodes().to$().find("td.details-control")).append("<div class='open-close-button'></div>");
         SetOpenClosed(newRow, 'opend');
         var nextTopObject = ref.alloc(DcmObjectPtrPtr);
         nodeDCMTK.DcmObjectNextObjectTop(current, nextTopObject);
@@ -188,7 +190,7 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
 
         ///Add explicitly
         SetRowId(row, GetRowId(parentRow));
-        addClass(row, 'childitem');
+        // addClass(row, 'childitem');
         row.nodes().to$().hide();
     }
     else
