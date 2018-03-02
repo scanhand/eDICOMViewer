@@ -22,7 +22,7 @@ menu.append(new MenuItem({
                 if(files == null)
                     return;
                 
-                dcmTK.loadDICOMFile(files[0]);
+                dcmTK.loadDICOMFileHierarchy(files[0]);
             }
         }
     ]

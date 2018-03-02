@@ -48,6 +48,9 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 process.env['PATH'] = oldPath;
 
 function loadDICOMFileHierarchy(fileName){
+    ///기존 row 모두 제거
+    elementTable.clear();
+    
     var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error('OpenDcmFileFormat failed!');
@@ -120,6 +123,9 @@ function removeClass(row, type){
 }
 
 function loadDICOMFile(fileName){
+    ///기존 row 모두 제거
+    elementTable.clear();
+
     var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error('OpenDcmFileFormat failed!');
