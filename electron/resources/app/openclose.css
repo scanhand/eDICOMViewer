@@ -8,12 +8,12 @@ html {
 
 .open-close-button {
   display: inline-block;
-  width: 1em;
-  height: 1em;
-  border: 0.1em solid #F0F0F0;
-  margin: 0.1em 45%;
-  font-size: 1.5em;
-  border-radius: 50%;
+  width: 1.5em;
+  height: 1.5em;
+  border: 0.1em solid #FFFFFF;
+  margin: 0em;
+  font-size: 1em;
+  border-radius: 10%;
   position: relative;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
@@ -27,7 +27,7 @@ html {
   content: "";
   display: block;
   position: absolute;
-  background-color: #F0F0F0;
+  background-color: #FFFFFF;
   width: 80%;
   height: 6%;
   left: 10%;
@@ -37,22 +37,22 @@ html {
   content: "";
   display: block;
   position: absolute;
-  background-color: #F0F0F0;
+  background-color: #FFFFFF;
   width: 6%;
   height: 80%;
   left: 47%;
   top: 10%;
 }
 .open-close-button.open {
-  background-color: #F0F0F0;
+  background-color: #FFFFFF;
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
   -webkit-transform: rotate(225deg);
   transform: rotate(225deg);
 }
 .open-close-button.open:after {
-  background-color: #F0F0F0;
+  background-color: #202020;
 }
 .open-close-button.open:before {
-  background-color: #F0F0F0;
+  background-color: #202020;
 }

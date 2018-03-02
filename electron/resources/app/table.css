@@ -10,6 +10,14 @@ tr.even {
     background-color: #202020!important;
 }
 
+tr.even.childitem{
+    background-color: #303030!important;
+}
+
+tr.odd.childitem{
+    background-color: #707070!important;
+}
+
 tr.even:hover {
     background-color: #505050!important;
 }

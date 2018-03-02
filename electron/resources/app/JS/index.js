@@ -31,6 +31,8 @@ $(document).ready(function() {
     $('#Elements tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = elementTable.row( tr );
+
+        $(this).children('.open-close-button').toggleClass('open');
         
         var parentid = dcmTK.GetRowId(row);
         if(dcmTK.IsRowOpend(row))
@@ -52,7 +54,5 @@ $(document).ready(function() {
     ///Test Code
     var fileName = "..\\etc\\sampleDICOM\\0001.DCM";
     dcmTK.loadDICOMFileHierarchy(fileName);
-
-
 } );
 
