@@ -11,11 +11,11 @@ tr.even {
 }
 
 tr.even.childitem{
-    background-color: #303030!important;
+    background-color: #606060!important;
 }
 
 tr.odd.childitem{
-    background-color: #707070!important;
+    background-color: #606060!important;
 }
 
 tr.even:hover {
