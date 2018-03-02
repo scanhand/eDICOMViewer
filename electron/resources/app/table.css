@@ -10,14 +10,6 @@ tr.even {
     background-color: #202020!important;
 }
 
-tr.even.childitem{
-    background-color: #606060!important;
-}
-
-tr.odd.childitem{
-    background-color: #606060!important;
-}
-
 tr.even:hover {
     background-color: #505050!important;
 }
@@ -27,15 +19,22 @@ tr.odd:hover {
 }
 
 tr.opend td.details-control {
-    /* background: url('./img/details_open.png') no-repeat center center; */
     cursor: pointer;
 }
 
 tr.closed td.details-control {
-    /* background: url('./img/details_close.png') no-repeat center center; */
     cursor: pointer;
 }
 
-div.DTS tbody tr.odd {
-    background-color: whitesmoke;
+@keyframes example {
+    from {background-color: initial;}
+    to {background-color: #606060;}
 }
+
+tr.childitem{
+    background-color: #606060!important;
+    animation-name: example;
+    animation-duration: 0.5s;
+    animation-play-state: running;
+}
+
