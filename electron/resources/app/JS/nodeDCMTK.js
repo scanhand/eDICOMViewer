@@ -1,4 +1,9 @@
 var util = require('./util.js');
+var vex = require('vex-js')
+import 'vex-js/dist/css/vex.css';
+import 'vex-js/dist/css/vex-theme-os.css';
+vex.registerPlugin(require('vex-dialog'));
+vex.defaultOptions.className = 'vex-theme-os';
 
 var oldPath = process.env.PATH;
 ///현재 path 기준은 electron.exe
@@ -222,6 +227,7 @@ export {
     SetOpenClosed,
     IsRowOpend,
     IsRowClosed,
-    GetRowId
+    GetRowId,
+    vex
 };
 

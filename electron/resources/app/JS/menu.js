@@ -24,6 +24,20 @@ menu.append(new MenuItem({
                 
                 dcmTK.loadDICOMFileHierarchy(files[0]);
             }
+        },
+        {
+            label: "Exit",
+            click: ()=>{
+                dcmTK.vex.dialog.confirm({
+                    message: 'Are you want to exit eDICOM Viewer?',
+                    callback: function (value) {
+                        if (value != true) 
+                            return;
+                        
+                        remote.getCurrentWindow().close();
+                    }
+                });
+            }
         }
     ]
 }));
@@ -36,32 +50,33 @@ menu.append(new MenuItem({
             click: ()=>{
                 console.log("Click About DICOM Viewer.");
             }
-        },
-      
+        }
     ]
 }));
 
-//for debugging
-menu.append(new MenuItem({
-        label: 'reload',
-        click: ()=>{
-            remote.getCurrentWindow().reload();
-        }
-    }
-));
-
+///Debugging
 var opendDevTool = false;
 menu.append(new MenuItem({
-    label: 'DevTool',
-    click: ()=>{
-        if(opendDevTool)
-            remote.getCurrentWebContents().closeDevTools();
-        else
-            remote.getCurrentWebContents().openDevTools();
-            
-        opendDevTool = !opendDevTool;
-    }
-}
-));
+    label:'Debugging',
+    submenu: [
+        {
+            label: 'reload',
+            click: ()=>{
+                remote.getCurrentWindow().reload();
+            }
+        },
+        {
+            label: 'DevTool',
+            click: ()=>{
+                if(opendDevTool)
+                    remote.getCurrentWebContents().closeDevTools();
+                else
+                    remote.getCurrentWebContents().openDevTools();
+                    
+                opendDevTool = !opendDevTool;
+            }
+        }
+    ]
+}));
 
 Menu.setApplicationMenu(menu);
