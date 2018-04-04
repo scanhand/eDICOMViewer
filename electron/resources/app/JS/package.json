@@ -30,6 +30,8 @@
     "datatables.net": "^1.10.16",
     "datatables.net-dt": "^1.10.16",
     "electron": "^1.7.11",
+    "electron-drag-drop": "^1.1.0",
+    "electron-log": "^2.2.14",
     "ffi": "^2.2.0",
     "file-loader": "^1.1.6",
     "fs": "0.0.1-security",

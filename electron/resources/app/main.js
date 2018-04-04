@@ -1,7 +1,8 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
-
+var log = require('./JS/node_modules/electron-log');
+ 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
@@ -9,12 +10,12 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({width: 1024, height: 600})
-
+  log.debug('createWindow');
   // and load the index.html of the app.
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: true,
   }))
 
   // Emitted when the window is closed.
@@ -24,6 +25,7 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
+
 }
 
 // This method will be called when Electron has finished
@@ -47,6 +49,3 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
