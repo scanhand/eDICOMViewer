@@ -12,6 +12,21 @@ function toHex(i, pad) {
     return strToParse;
 };
 
+function strlen(str){
+  var stringByteLength = (function(s,b,i,c){
+    for(b=i=0;c=s.charCodeAt(i++);b+=c>>11?3:c>>7?2:1);
+    return b
+  })(str);
+  return stringByteLength;
+}
+
+function trim(str){
+  var len = this.strlen(str);
+  return str.substring(0, len);
+}
+
 export {
-    toHex
+    toHex,
+    strlen,
+    trim
 };

@@ -8,9 +8,7 @@ import 'datatables.net';
 var dcmTK = require('./nodeDCMTK.js');
 import menu from './menu.js';
 
-
 console.log("index.js loaded!")
-
 $(document).ready(function() {
     elementTable = $('#Elements').DataTable({
         paging: false,
@@ -50,6 +48,16 @@ $(document).ready(function() {
             });
         }
     } );
+
+    //double click
+    $('#Elements tbody').on('dblclick', 'tr', function(){
+        var tr = $(this);
+        var row = elementTable.row( tr );
+        var rowId = dcmTK.GetRowId(row);
+        if(!dcmTK.ShowEditForm(row))
+            return;
+        
+    });
 
     ///Test Code
     var fileName = "..\\etc\\sampleDICOM\\0001.DCM";

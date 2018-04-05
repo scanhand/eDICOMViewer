@@ -28,6 +28,7 @@ menu.append(new MenuItem({
         {
             label: "Exit",
             click: ()=>{
+                dcmTK.vex.defaultOptions.className = 'vex-theme-os';
                 dcmTK.vex.dialog.confirm({
                     message: 'Are you want to exit eDICOM Viewer?',
                     callback: function (value) {

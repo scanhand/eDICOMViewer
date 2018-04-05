@@ -2,8 +2,9 @@ var util = require('./util.js');
 var vex = require('vex-js')
 import 'vex-js/dist/css/vex.css';
 import 'vex-js/dist/css/vex-theme-os.css';
+import 'vex-js/dist/css/vex-theme-top.css';
 vex.registerPlugin(require('vex-dialog'));
-vex.defaultOptions.className = 'vex-theme-os';
+
 
 var oldPath = process.env.PATH;
 ///현재 path 기준은 electron.exe
@@ -195,9 +196,9 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
         var row = parentRow.table().row.add({
             'id': id,
             'tag': elementTag,
-            'name': elementName.toString('utf8'),
-            'vr': vr.toString('utf8'),
-            'value': value.toString('utf8'),
+            'name': elementName,
+            'vr': vr,
+            'value': value,
         }).draw(false);
 
         ///Add explicitly
@@ -210,12 +211,42 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
         var row = elementTable.row.add({
             'id': id,
             'tag': elementTag,
-            'name': elementName.toString('utf8'),
-            'vr': vr.toString('utf8'),
-            'value': value.toString('utf8'),
+            'name': elementName,
+            'vr': vr,
+            'value': value,
         }).draw(false);
     }
     return row;
+}
+
+function ShowEditForm(row){
+    var rowData = row.data();
+    var tag = util.trim(rowData['tag'].toString('utf8'));
+    var name = util.trim(rowData['name'].toString('utf8'));
+    var vr = util.trim(rowData['vr'].toString('utf8'));
+    var value = util.trim(rowData['value'].toString('utf8'));
+
+    vex.defaultOptions.className = 'vex-theme-top';
+    vex.dialog.open({
+        message: 'Modify Element Value',
+        input: [
+            '<label for="tag">TAG</label><input name="tag" type="text" value="{0}" readonly/>'.format(tag),
+            '<label for="name">Name</label><input name="name" type="text" value="{0}" readonly/>'.format(name),
+            '<label for="vr">VR</label><input name="vr" type="text" value="{0}" readonly />'.format(vr),
+            '<label for="value">Value</label><input name="value" type="text" value="{0}"  />'.format(value)
+        ].join(''),
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, { text: 'OK' }),
+            $.extend({}, vex.dialog.buttons.NO, { text: 'Cancel' })
+        ],
+        callback: function (data) {
+            if (!data) 
+                return;
+                
+            console.log('value=', data.value);
+        }
+    });
+    return true;
 }
 
 export { 
@@ -228,6 +259,7 @@ export {
     IsRowOpend,
     IsRowClosed,
     GetRowId,
+    ShowEditForm,
     vex
 };
 
