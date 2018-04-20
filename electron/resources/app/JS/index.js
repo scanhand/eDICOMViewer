@@ -54,9 +54,7 @@ $(document).ready(function() {
         var tr = $(this);
         var row = elementTable.row( tr );
         var rowId = dcmTK.GetRowId(row);
-        if(!dcmTK.ShowEditForm(row))
-            return;
-        
+        dcmTK.ShowEditForm(row)
     });
 
     ///Test Code
@@ -64,3 +62,6 @@ $(document).ready(function() {
     dcmTK.loadDICOMFileHierarchy(fileName);
 } );
 
+$(window).on("beforeunload", function() { 
+    dcmTK.closeDICOMFile();
+})

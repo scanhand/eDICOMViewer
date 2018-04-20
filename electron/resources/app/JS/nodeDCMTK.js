@@ -53,11 +53,15 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 
 process.env['PATH'] = oldPath;
 
+var ID2Elements = {};
+var dcmFileFormat = null;
+
 function loadDICOMFileHierarchy(fileName){
     ///기존 row 모두 제거
     elementTable.clear();
+    ID2Elements = {};
     
-    var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
+    dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error('OpenDcmFileFormat failed!');
 
@@ -67,8 +71,14 @@ function loadDICOMFileHierarchy(fileName){
     var nextObject = ref.alloc(DcmObjectPtrPtr);
     nodeDCMTK.DcmObjectNextInContainer(dataset.deref(), ref.NULL, nextObject);
     AddRowHierarchy(dataset.deref(), nextObject.deref(), 0, null, 0);
+}
 
-    nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
+function closeDICOMFile(){
+    if(dcmFileFormat != null)
+    {
+        nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
+        dcmFileFormat = null;
+    }
 }
 
 function AddRowHierarchy(container, current, level, parentRow, id){
@@ -132,7 +142,7 @@ function loadDICOMFile(fileName){
     ///기존 row 모두 제거
     elementTable.clear();
 
-    var dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
+    dcmFileFormat = ref.alloc(DcmFileFormatPtrPtr);
     if(!nodeDCMTK.OpenDcmFileFormat(fileName, dcmFileFormat))
         console.error('OpenDcmFileFormat failed!');
 
@@ -146,8 +156,6 @@ function loadDICOMFile(fileName){
         nodeDCMTK.GetElement(dcmFileFormat.deref(), i, dcmElementPtr);
         AddTableRow(dcmElementPtr.deref());
     }
-
-    nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
 };
 
 function IsItemTag(dcmElementPtr){
@@ -172,6 +180,9 @@ function SetRowId(row, id){
 }
 
 function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
+    ///insert to dictionary
+    ID2Elements[id] = dcmElementPtr;
+
     var gtag = ref.alloc('uint16');
     nodeDCMTK.GetElementGTag(dcmElementPtr, gtag);
 
@@ -221,6 +232,7 @@ function AddTableRow(dcmElementPtr, level, parentRow, id, isLeaf){
 
 function ShowEditForm(row){
     var rowData = row.data();
+    var id = rowData['id'];
     var tag = util.trim(rowData['tag'].toString('utf8'));
     var name = util.trim(rowData['name'].toString('utf8'));
     var vr = util.trim(rowData['vr'].toString('utf8'));
@@ -243,10 +255,13 @@ function ShowEditForm(row){
             if (!data) 
                 return;
                 
-            console.log('value=', data.value);
+            ///modify
+            console.log('ID=', id);
+            var elementName = new Buffer(255);
+            nodeDCMTK.GetElementTagName(ID2Elements[id], elementName);
+            console.log(util.trim(elementName.toString('utf8')));
         }
     });
-    return true;
 }
 
 export { 
@@ -254,6 +269,7 @@ export {
     DcmElementPtrPtr,
     nodeDCMTK,
     loadDICOMFile,
+    closeDICOMFile,
     loadDICOMFileHierarchy,
     SetOpenClosed,
     IsRowOpend,
