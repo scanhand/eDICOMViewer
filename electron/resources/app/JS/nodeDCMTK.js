@@ -48,7 +48,9 @@ var nodeDCMTK = ffi.Library('NodeDCMTK.dll', {
 'IsLeafElement': ['int',[DcmElementPtr,ucharPtr]],
 'GetDcmDataSet': ['int',[DcmFileFormatPtr, DcmObjectPtrPtr]],
 'DcmObjectNextInContainer': ['int',[DcmObjectPtr, DcmObjectPtr, DcmObjectPtrPtr]],
-'DcmObjectNextObjectTop': ['int',[DcmObjectPtr, DcmObjectPtrPtr]]
+'DcmObjectNextObjectTop': ['int',[DcmObjectPtr, DcmObjectPtrPtr]],
+'SetElementValue': ['int',[DcmElementPtr, 'string']],
+'SaveDcmFileFormat': ['int',[DcmFileFormatPtr, 'string']]
 });
 
 process.env['PATH'] = oldPath;
@@ -79,6 +81,11 @@ function closeDICOMFile(){
         nodeDCMTK.CloseDcmFileFormat(dcmFileFormat.deref());
         dcmFileFormat = null;
     }
+}
+
+function saveDICOMFile(fileName){
+    if(dcmFileFormat != null)
+        nodeDCMTK.SaveDcmFileFormat(dcmFileFormat.deref(), fileName);
 }
 
 function AddRowHierarchy(container, current, level, parentRow, id){
@@ -256,10 +263,8 @@ function ShowEditForm(row){
                 return;
                 
             ///modify
-            console.log('ID=', id);
-            var elementName = new Buffer(255);
-            nodeDCMTK.GetElementTagName(ID2Elements[id], elementName);
-            console.log(util.trim(elementName.toString('utf8')));
+            rowData['value'] = data.value.trim();
+            nodeDCMTK.SetElementValue(ID2Elements[id], rowData['vr']);
         }
     });
 }
@@ -270,6 +275,7 @@ export {
     nodeDCMTK,
     loadDICOMFile,
     closeDICOMFile,
+    saveDICOMFile,
     loadDICOMFileHierarchy,
     SetOpenClosed,
     IsRowOpend,

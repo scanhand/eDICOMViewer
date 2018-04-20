@@ -26,6 +26,23 @@ menu.append(new MenuItem({
             }
         },
         {
+            label: 'Save File...',
+            click: ()=>{
+                var fileName=[];
+                fileName = dialog.showSaveDialog({
+                    properties: ['saveFile'],
+                    filters: [
+                        {name: 'DICOM', extensions: ['dcm', 'dic']},
+                        {name: 'All Files', extensions: ['*']}
+                      ]
+                }); 
+                if(fileName == null)
+                    return;
+                
+                dcmTK.saveDICOMFile(fileName);
+            }
+        },
+        {
             label: "Exit",
             click: ()=>{
                 dcmTK.vex.defaultOptions.className = 'vex-theme-os';

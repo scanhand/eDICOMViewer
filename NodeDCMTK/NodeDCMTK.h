@@ -51,4 +51,8 @@ extern "C" {
 	DllExport int DcmObjectNextInContainer(void* pcontainer, void* pcurrent, void** pnextObject);
 
 	DllExport int DcmObjectNextObjectTop(void* pcurrent, void** pnextObject);
+
+	DllExport int SetElementValue(void* elementPtr, char* value);
+
+	DllExport int SaveDcmFileFormat(void* dcmPtr, char* fileName);
 }
