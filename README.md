@@ -11,4 +11,18 @@ DCMTK library has been use as wrapping c++ dll module in DICOMEditor.
 Main application is base on [**eletron**](https://github.com/atom/electron).
 (first concept was .NET framwork by c#. But it changed concept to javascript.)
 
+## Build
+
+Just run `OneClickBuild.bat` file.
+
+    C:...>OneClickBuild.bat
+
+
+## Run Application
+
+Just run `Run.bat` file.
+
+    C:...>Run.bat
+
 ![eDICOMViewer](/etc/img/eDICOMViewer_Sample.png)
+
