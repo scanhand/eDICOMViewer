@@ -1,5 +1,8 @@
 @echo off
 @echo Start eDICOM Viewer Building...
 cd ./electron/resources/app/JS
-npm install
+@echo installing module by npm
+call npm install
+@echo packaging by webpack
+call webpack
 pause
