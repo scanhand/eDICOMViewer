@@ -7,7 +7,7 @@ cd ./electron/resources/app/JS
 call npm install
 @echo. 
 @echo ## 2.Start electron-rebuild by npm ##
-call ./node_modules/.bin/electron-rebuild -v1.7.10
+call ./node_modules/.bin/electron-rebuild -v 1.7.10
 @echo. 
 @echo ## 3.Packaging by webpack ##
 call webpack
