@@ -1,6 +1,6 @@
 @echo off
 @echo ##### Start eDICOM Viewer Building... ##### 
-@echo 
+@echo. 
 cd ./electron/resources/app/JS
 @echo ### 1.Installing module by npm ##### 
 call npm install
