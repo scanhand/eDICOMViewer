@@ -252,7 +252,7 @@ function ShowEditForm(row){
             '<label for="tag">TAG</label><input name="tag" type="text" value="{0}" readonly/>'.format(tag),
             '<label for="name">Name</label><input name="name" type="text" value="{0}" readonly/>'.format(name),
             '<label for="vr">VR</label><input name="vr" type="text" value="{0}" readonly />'.format(vr),
-            '<label for="value">Value</label><input name="value" type="text" value="{0}"  />'.format(value)
+            '<label for="value">Value</label><input name="value" type="text" value="{0}" autofocus />'.format(value)
         ].join(''),
         buttons: [
             $.extend({}, vex.dialog.buttons.YES, { text: 'OK' }),
@@ -264,7 +264,8 @@ function ShowEditForm(row){
                 
             ///modify
             rowData['value'] = data.value.trim();
-            nodeDCMTK.SetElementValue(ID2Elements[id], rowData['vr']);
+            nodeDCMTK.SetElementValue(ID2Elements[id], rowData['value']);
+            row.invalidate().draw();
         }
     });
 }
